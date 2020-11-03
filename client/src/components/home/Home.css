@@ -1,0 +1,18 @@
+.Home-wrapper {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Home-title {
+
+}
+
+
+.Home-loginForm form {
+    display: flex;
+    flex-flow: column;
+    /* justify-content: center; */
+    align-items: center;
+}

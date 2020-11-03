@@ -1,0 +1,19 @@
+.CoEditor-wrapper {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.CoEditor-main {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.CoEditor-main textarea {
+    width: 90vw;
+    height: 300px;
+    font-size: 1.3rem;
+}
