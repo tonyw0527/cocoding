@@ -17,7 +17,7 @@ const Home = () => {
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     alert(`${UserName}, ${Password}`);
-                    history.push('/co-editor', {userName: UserName, password: Password});
+                    history.push('/dashboard', {userName: UserName, password: Password});
                 }}>
                     <label>UserName
                         <input type="text" value={UserName} onChange={(e)=>{

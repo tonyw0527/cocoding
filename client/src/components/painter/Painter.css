@@ -1,12 +1,184 @@
-.painter-wrapper {
+.Painter-wrapper {
     display: flex;
-    flex-flow: column;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    width: 100%;
+
+}
+
+.painter-title-box {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    text-align: center;
+}
+
+.painter-drawing-box {
+    position: relative;
+    margin-bottom: 8px;
+    box-shadow: 0px 0px 15px grey;
 }
 
 #myCanvas {
-    /* width: 90vw;
-    height: 250px; */
-    border: 1px solid #000000;
+    /* border: 1px solid black; */
+}
+
+
+.painter-tool-box {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 3px;
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 90%;
+}
+
+.painter-tool-box button {
+    width: 30px;
+    height: 20px;
+    margin-right: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    transition: transform 0.3s;
+}
+
+.painter-tool-box button:active {
+    transform: translateY(15%);
+}
+
+.painter-tool-box button:focus {
+    outline: 0;
+}
+
+.painter-tool-box .reset {
+    /* background-image: url("../../assets/images/reset-icon.svg"); */
+    background-repeat: no-repeat;
+    background-position: center;
+    /* color: transparent; */
+}
+
+.painter-tool-box .reset:active {
+    transform: rotate(1turn);
+}
+
+.painter-tool-box .eraser {
+    /* background-image: url("../../assets/images/eraser.svg"); */
+    background-repeat: no-repeat;
+    background-position: center;
+    /* color: transparent; */
+}
+
+.palette-open-button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 1px solid black;
+    border-radius: 50%;  
+    /* color: transparent; */
+    background-color: transparent;
+    /* background-image: url('../../assets/images/palette_icon.svg'); */
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+}
+
+.palette {
+    display: none;
+    position: absolute;
+    top: -180%;
+    left: -180%;
+
+    width: 230px;
+    height: 25px;
+
+    border: 1px solid black;
+    border-radius: 10px;
+
+    padding: 2px;
+    background-color: whitesmoke;
+}
+
+.palette .palette-color {
+    border-radius: 50%;
+}
+
+.palette .palette-black {
+    background-color: black;
+    color: transparent;
+}
+
+.palette .palette-red {
+    background-color: red;
+    color: transparent;
+}
+
+.palette .palette-blue {
+    background-color: blue;
+    color: transparent;
+}
+
+.palette .palette-skyblue {
+    background-color: skyblue;
+    color: transparent;
+}
+
+.palette .palette-green {
+    background-color: green;
+    color: transparent;
+}
+
+.palette .palette-purple {
+    background-color: purple;
+    color: transparent;
+}
+
+.palette .palette-yellow {
+    background-color: yellow;
+    color: transparent;
+}
+
+.palette .palette-brown {
+    background-color: brown;
+    color: transparent;
+}
+
+.prev-btn {
+    /* background-image: url('../../assets/images/arrow_left_icon.svg'); */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    /* color: transparent; */
+    cursor: pointer;
+}
+
+.next-btn {
+    /* background-image: url('../../assets/images/arrow_right_icon.svg'); */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    /* color: transparent; */
+    cursor: pointer;
+}
+
+.painter-tool-box a {
+    display: block;
+    /* background-image: url('../../assets/images/save_icon.svg'); */
+    background-repeat: no-repeat;
+    background-position: center;
+    /* color: transparent; */
+    cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+      
+    .painter-tool-box {
+        width: 350px;
+    }
 }

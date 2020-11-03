@@ -1,46 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react';
-import io from 'socket.io-client';
-import Painter from '../painter/Painter';
-import QnaBoard from '../qna-board/QnaBoard';
 import './CoEditor.css';
-import dotenv from 'dotenv';
-dotenv.config();
+
 
 const CoEditor = (props) => {
-    const {userName, password} = props.location.state;
-
-    const socketRef = useRef();
+    const {socket} = props;
+    const {userName, password} = props;
 
     const [Text, setText] = useState('');
     const [IsTutor, setIsTutor] = useState(false);
     const [IsTutorLoggedIn, setIsTutorLoggedIn] = useState(false);
 
     useEffect(() => {
-        socketRef.current = io.connect(process.env.REACT_APP_LOCAL_URL);
+        console.log('통과')
+        socket.emit('login', { userName, password });
 
-        socketRef.current.emit('login', { userName, password });
-
-        socketRef.current.on('login', ({isTutor, text_cache}) => {
+        socket.on('login', ({isTutor, text_cache}) => {
             setIsTutor(isTutor);
             setText(text_cache);
         });
 
-        socketRef.current.on('tutor login', ({login}) => {
+        socket.on('tutor login', ({login}) => {
             setIsTutorLoggedIn(login);
         });
 
-        socketRef.current.on('send text', (text) => {
+        socket.on('send text', (text) => {
             setText(text);
         });
 
         return () => {
-            socketRef.current.off('login');
-
-            socketRef.current.off('tutor login');
-
-            socketRef.current.off('send text');
+            socket.off('login');
+            socket.off('tutor login');
+            socket.off('send text');
         }
-    }, [])
+    }, [socket])
 
     return (
         <div className="CoEditor-wrapper">
@@ -53,13 +45,11 @@ const CoEditor = (props) => {
                 <textarea value={Text} onChange={(e)=>{
                     const text = e.target.value;
                         setText(text);
-                        socketRef.current.emit('send text', text);
+                        socket.emit('send text', text);
 
                     }} placeholder="for tutor" spellCheck="false">
                 </textarea>
             </div>
-            {/* <Painter /> */}
-            <QnaBoard socket={socketRef.current} />
         </div>
     );
 };

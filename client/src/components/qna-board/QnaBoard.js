@@ -9,22 +9,19 @@ const QnaBoard = (props) => {
     const [QnaList, setQnaList] = useState([]);
 
     useEffect(() => {
-        if(socket){
-            socket.emit('send qna-list-cache');
-            socket.on('send qna-list-cache', (data) => {
-                setQnaList(data);
-            })
+        socket.emit('send qna-list-cache');
+        socket.on('send qna-list-cache', (data) => {
+            setQnaList(data);
+        })
 
-            socket.on('send qna-list', (data) => {
-                setQnaList([]);
-                setQnaList(data);
-            })
-        }
+        socket.on('send qna-list', (data) => {
+            setQnaList([]);
+            setQnaList(data);
+        })
+        
         return () => {
-            if(socket){
-                socket.off('send qna-list-cache');
-                socket.off('send qna-list');
-            }
+            socket.off('send qna-list-cache');
+            socket.off('send qna-list');
         }
     }, [socket]);
 
