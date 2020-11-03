@@ -1,10 +1,13 @@
 .Painter-wrapper {
-    display: flex;
+    display: none;
+    position: fixed;
+    z-index: 1;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 
     width: 100%;
+    background-color: white;
 
 }
 

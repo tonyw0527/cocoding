@@ -19,9 +19,9 @@ const Dashboard = (props) => {
     }, [])
 
     return (
-        <>
-            <CoEditor socket={socket} userName={userName} password={password} />
+        <>  
             <Painter socket={socket} />
+            <CoEditor socket={socket} userName={userName} password={password} />
             <QnaBoard socket={socket} />
         </>
     );

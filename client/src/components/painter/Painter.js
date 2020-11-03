@@ -7,6 +7,7 @@ const workMemory = new WorkMemory();
 
 const Painter = () => {
 
+    const [IsOpen, setIsOpen] = useState(false);
     const [Eraser_flag, setEraser_flag] = useState(false);
     const [PenColor, setPenColor] = useState('black');
 
@@ -116,6 +117,7 @@ const Painter = () => {
         }
 
         const mousedownListener = (e) => {
+            resizeAndScrollListener();
             drawing('down', e, Eraser_flag, PenColor);
         }
 
@@ -180,17 +182,18 @@ const Painter = () => {
         }
     }, [Eraser_flag, PenColor]);
 
-
     return (
         <>
         <button style={{marginRight:"5px"}} onClick={() => {
-                    if(painterRef.current.style.display === "none"){
-                        painterRef.current.style.display = "flex";
-                    } else {
+                    if(IsOpen){
                         painterRef.current.style.display = "none";
+                        setIsOpen(false);
+                    } else {
+                        painterRef.current.style.display = "flex";
+                        setIsOpen(true);
                     }
                 }}>
-                fold
+                    {IsOpen ? 'Close Painter' : 'Open Painter'}
         </button>
         <div ref={painterRef} className="Painter-wrapper">
             <div className="painter-title-box">
