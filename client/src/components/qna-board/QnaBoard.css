@@ -1,0 +1,30 @@
+.Qna-wrapper {
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Qna-title-box {
+
+}
+
+.Qna-input-box {
+
+}
+
+.Qna-list-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.Qna-input-box label {
+    margin-right: 5px;
+}
+
+.Qna-input-box input {
+    width: 300px;
+}

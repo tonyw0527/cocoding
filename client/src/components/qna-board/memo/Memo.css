@@ -1,0 +1,40 @@
+.memo-wrapper {
+    width: 195px;
+    height: 200px;
+    margin: 5px;
+    padding: 5px;
+    background-color: antiquewhite;
+}
+
+.question-box {
+    padding: 5px;
+    font-size: large;
+    font-weight: 600;
+}
+
+.question-box button {
+    margin-right: 5px;
+}
+
+.question-box input {
+    width: 70%;
+    background-color: transparent;
+    border: none;
+    font-size: 1.2rem;
+}
+
+.question-box input:focus {
+    outline: 0;
+}
+
+.answer-box {
+    height: 82%;
+}
+
+.answer-box textarea {
+    padding: 5px;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    background-color: transparent;
+}

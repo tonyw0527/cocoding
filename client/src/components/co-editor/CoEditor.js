@@ -20,8 +20,9 @@ const CoEditor = (props) => {
 
         socketRef.current.emit('login', { userName, password });
 
-        socketRef.current.on('login', ({isTutor}) => {
+        socketRef.current.on('login', ({isTutor, text_cache}) => {
             setIsTutor(isTutor);
+            setText(text_cache);
         });
 
         socketRef.current.on('tutor login', ({login}) => {
@@ -45,6 +46,7 @@ const CoEditor = (props) => {
         <div className="CoEditor-wrapper">
             <div className="CoEditor-title">
                 <h1>Co-Editor</h1>
+                {IsTutor ? <h3>Tutor Hi!</h3> : <h3>Tutee Hi!</h3>}
                 {IsTutorLoggedIn ? <h3>Tutoring <span style={{color: "red"}}>OnAir</span></h3> : <h3>Call your Tutor</h3>}
             </div>
             <div className="CoEditor-main">
@@ -53,11 +55,11 @@ const CoEditor = (props) => {
                         setText(text);
                         socketRef.current.emit('send text', text);
 
-                    }} placeholder="for tutor">
+                    }} placeholder="for tutor" spellCheck="false">
                 </textarea>
             </div>
             {/* <Painter /> */}
-            <QnaBoard />
+            <QnaBoard socket={socketRef.current} />
         </div>
     );
 };

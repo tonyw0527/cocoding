@@ -16,4 +16,5 @@
     width: 90vw;
     height: 300px;
     font-size: 1.3rem;
+    resize: none;
 }
