@@ -34,6 +34,13 @@ const CoEditor = (props) => {
         }
     }, [socket])
 
+    useEffect(() => {
+        document.getElementById('note').innerHTML = Text;
+        return () => {
+            
+        }
+    }, [Text])
+
     return (
         <div className="CoEditor-wrapper">
             <div className="CoEditor-title">
@@ -42,13 +49,18 @@ const CoEditor = (props) => {
                 {IsTutorLoggedIn ? <h3>Tutoring <span style={{color: "red"}}>OnAir</span></h3> : <h3>Call your Tutor</h3>}
             </div>
             <div className="CoEditor-main">
-                <textarea value={Text} onChange={(e)=>{
-                    const text = e.target.value;
+                <div className="CoEditor-tools">
+                    <button onClick={()=>{document.execCommand('bold')}}>
+                        bold
+                    </button>
+                </div>
+                <div id="note" className="CoEditor-note" contenteditable="true" spellCheck="false" onClick={()=>{
+                        const text = document.getElementById('note').innerHTML;
                         setText(text);
                         socket.emit('send text', text);
-
-                    }} placeholder="for tutor" spellCheck="false">
-                </textarea>
+                    }}>
+                    hi
+                </div>
             </div>
         </div>
     );

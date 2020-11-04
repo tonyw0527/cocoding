@@ -5,6 +5,10 @@
     align-items: center;
 }
 
+.CoEditor-title {
+    margin-bottom: 10px;
+}
+
 .CoEditor-main {
     display: flex;
     flex-flow: column;
@@ -13,9 +17,8 @@
     margin-bottom: 10px;
 }
 
-.CoEditor-main textarea {
+.CoEditor-note {
     width: 90vw;
-    height: 300px;
-    font-size: 1.3rem;
-    resize: none;
+    height: 200px;
+    border: 1px solid black;
 }
