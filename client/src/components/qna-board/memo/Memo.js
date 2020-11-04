@@ -11,6 +11,7 @@ const Memo = (props) => {
     return (
         <div className="memo-wrapper">
             <div className="question-box">
+                <input value={Question} onChange={(e) => setQuestion(e.target.value)} readOnly={!IsEditing} />
                 <button type="button" onClick={(e) => {
                     if(IsEditing){
                         setIsEditing(false);
@@ -21,9 +22,11 @@ const Memo = (props) => {
                         setIsEditing(true);
                     } 
                 }}>
-                    {IsEditing ? 'done' : 'edit'}
+                    {IsEditing ? 'Done' : 'Edit'}
                 </button>
-                <input value={Question} onChange={(e) => setQuestion(e.target.value)} readOnly={!IsEditing} />
+                <button type="button">
+                    Delete
+                </button>
             </div>
             <div className="answer-box">
                 <textarea value={Answer} onChange={(e) => {setAnswer(e.target.value)}} readOnly={!IsEditing} spellCheck="false" >

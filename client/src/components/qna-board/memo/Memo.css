@@ -1,13 +1,12 @@
 .memo-wrapper {
-    width: 195px;
-    height: 200px;
+    width: 30vw;
+    height: 230px;
     margin: 5px;
     padding: 5px;
     background-color: antiquewhite;
 }
 
 .question-box {
-    padding: 5px;
     font-size: large;
     font-weight: 600;
 }
@@ -17,10 +16,10 @@
 }
 
 .question-box input {
-    width: 70%;
+    width: 100%;
     background-color: transparent;
     border: none;
-    font-size: 1.2rem;
+    overflow-y: hidden;
 }
 
 .question-box input:focus {
@@ -34,7 +33,18 @@
 .answer-box textarea {
     padding: 5px;
     width: 100%;
-    height: 100%;
+    height: 90%;
     resize: none;
     background-color: transparent;
+    overflow-x: hidden;
+}
+
+.answer-box textarea::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+
+@media screen and (max-width: 600px) {
+    .memo-wrapper {
+        width: 40vw;
+    }
 }
