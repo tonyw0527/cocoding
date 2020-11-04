@@ -65,10 +65,6 @@
     /* color: transparent; */
 }
 
-.painter-tool-box .reset:active {
-    transform: rotate(1turn);
-}
-
 .painter-tool-box .eraser {
     /* background-image: url("../../assets/images/eraser.svg"); */
     background-repeat: no-repeat;

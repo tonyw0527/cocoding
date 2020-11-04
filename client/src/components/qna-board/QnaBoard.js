@@ -23,7 +23,7 @@ const QnaBoard = (props) => {
             socket.off('send qna-list-cache');
             socket.off('send qna-list');
         }
-    }, [socket]);
+    }, []);
 
     const handleEditDone = (index, qna) => {
         const newQnaList = QnaList;

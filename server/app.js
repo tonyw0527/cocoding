@@ -10,6 +10,7 @@ const invitation_code = process.env.INVITATION_CODE;
 let isTutorLoggedIn = false;
 let tutorId = '';
 
+let image_cache = '';
 let text_cache = '';
 let qna_list_cache = [];
 
@@ -32,6 +33,24 @@ io.on('connection', (socket) => {
             if(isTutorLoggedIn){
                 io.emit('tutor login', {login: true});
             }
+        }
+    });
+
+    socket.on('send drawing data', (data) => {
+        socket.broadcast.emit('send drawing data', data);
+    })
+
+    socket.on('send cache image' ,({ cacheImage, type }) => {
+        if(type === 'login') {
+            socket.emit('send cache image', {cacheImage: image_cache, type: 'login'});
+            return;
+        }
+
+        image_cache = cacheImage;
+        if(type === 'save'){
+            return;
+        } else {
+            socket.broadcast.emit('send cache image', ({ cacheImage, type }));
         }
     });
 

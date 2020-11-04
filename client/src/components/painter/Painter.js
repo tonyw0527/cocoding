@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
 import './Painter.css';
 
-import { WHITE_PNG, WorkMemory, canvasImgSetting } from '../../utils/utils';
+import { WorkMemory, canvasImgSetting } from '../../utils/utils';
 
 const workMemory = new WorkMemory();
 
-const Painter = () => {
+const Painter = (props) => {
+    const {socket} = props;
 
     const [IsOpen, setIsOpen] = useState(false);
     const [Eraser_flag, setEraser_flag] = useState(false);
@@ -28,8 +29,14 @@ const Painter = () => {
     useEffect(() => {
         const myCanvas = myCanvasRef.current;
         const myCtx = myCanvas.getContext('2d');
+        myCtx.canvas.width  = 350;
+        myCtx.canvas.height = 350;
+        
         myCtx.fillStyle = 'white';
-        myCtx.fillRect(0,0,myCanvasRef.current.width,myCanvasRef.current.height);
+        myCtx.fillRect(0,0,myCtx.canvas.width,myCtx.canvas.height);
+
+        const cacheImage = myCanvasRef.current.toDataURL();
+        workMemory.init(cacheImage);
 
         myCanvas.addEventListener("touchstart", function (e) {
             if (e.target === myCanvasRef.current) {
@@ -58,8 +65,6 @@ const Painter = () => {
 
         const myCanvas = myCanvasRef.current;
         const myCtx = myCanvas.getContext('2d');
-        myCtx.canvas.width  = window.innerWidth - 65;
-        myCtx.canvas.height = window.innerHeight - 150;
 
         let prevX = 0;
         let prevY = 0;
@@ -87,14 +92,30 @@ const Painter = () => {
 
             prevX = currX;
             prevY = currY;
-            currX = e.clientX - forXCorrection;
-            currY = e.clientY- forYCorrection;
-
+            if(x === undefined && y === undefined){
+                currX = e.clientX - forXCorrection;
+                currY = e.clientY- forYCorrection;
+            } else {
+                currX = x;
+                currY = y;
+            }
             
 
             if (type === 'down') {
                 path_flag = true;
                 myCtx.fillRect(currX, currY, rectWidth, rectWidth);
+
+                // socket
+                const data = {
+                    currX,
+                    currY,
+                    Eraser_flag,
+                    type: 'down',
+                    color: PenColor
+                };
+                if(x === undefined && y === undefined){
+                    socket.emit('send drawing data', data);
+                }
 
             } else  if (type === 'move' && path_flag) {
                 myCtx.beginPath();
@@ -103,15 +124,39 @@ const Painter = () => {
                 myCtx.stroke();
                 myCtx.closePath();
 
+                // socket
+                const data = {
+                    currX,
+                    currY,
+                    Eraser_flag,
+                    type: 'move',
+                    color: PenColor
+                };
+                if(x === undefined && y === undefined){
+                    socket.emit('send drawing data', data);
+                }
+
             } else if (type === 'up' || type === 'out') {
                 path_flag = false;
 
+                // socket
+                const data = {
+                    currX,
+                    currY,
+                    Eraser_flag,
+                    type: 'up',
+                    color: PenColor
+                };
+                if(x === undefined && y === undefined){
+                    socket.emit('send drawing data', data);
+                }
+
                 if(type === 'up') {
                     setTimeout(()=> {
-                        const cashingImage = myCanvasRef.current.toDataURL();
-                        workMemory.saving(cashingImage);
-                    }, 100);
-                    
+                        const cacheImage = myCanvasRef.current.toDataURL();
+                        socket.emit('send cache image', {cacheImage, type:'save'});
+                        workMemory.saving(cacheImage);
+                    }, 100);   
                 }
             }
         }
@@ -159,6 +204,11 @@ const Painter = () => {
             forYCorrection = myCanvas.getBoundingClientRect().top;
         };
 
+        // socket
+        socket.on('send drawing data', (data) => {
+            drawing(data.type, null, data.Eraser_flag, data.color, data.currX, data.currY);
+        });
+
         window.addEventListener('resize', resizeAndScrollListener);
         window.addEventListener('scroll', resizeAndScrollListener);
         myCanvas.addEventListener('mousedown', mousedownListener);
@@ -179,8 +229,22 @@ const Painter = () => {
             myCanvas.removeEventListener("touchstart", touchstartListener);
             myCanvas.removeEventListener("touchend", touchendListener);
             myCanvas.removeEventListener("touchmove", touchmoveListener);
+
+            socket.off('send drawing data');
         }
     }, [Eraser_flag, PenColor]);
+
+    // socket
+    useEffect(() => {
+        socket.emit('send cache image', {cacheImage: null, type: 'login'})
+        socket.on('send cache image' ,({cacheImage, type}) => {
+            canvasImgSetting(myCanvasRef.current, cacheImage);
+        });
+        
+        return () => {
+            socket.off('send cache image');
+        }
+    }, [])
 
     return (
         <>
@@ -208,8 +272,9 @@ const Painter = () => {
                     myCtx.fillStyle = 'white';
                     myCtx.fillRect(0,0,myCanvasRef.current.width,myCanvasRef.current.height);
                     
-                    const cashingImage = myCanvasRef.current.toDataURL();
-                    workMemory.saving(cashingImage);
+                    const cacheImage = myCanvasRef.current.toDataURL();
+                    workMemory.saving(cacheImage);
+                    socket.emit('send cache image', {cacheImage, type:'reset'});
                 }}>
                     Reset
                 </button>
@@ -249,6 +314,7 @@ const Painter = () => {
                     const flag = workMemory.moveToPrev((prev) => {
 
                         canvasImgSetting(myCanvasRef.current, prev);
+                        socket.emit('send cache image', {cacheImage: prev, type:'prev'});
                     });
                     if(flag === 'end') {
                     }
@@ -259,6 +325,7 @@ const Painter = () => {
                     const flag = workMemory.moveToNext((next) => {
 
                         canvasImgSetting(myCanvasRef.current, next);
+                        socket.emit('send cache image', {cacheImage: next, type:'next'});
                     });
                     if(flag === 'end') {
                     }
@@ -266,7 +333,7 @@ const Painter = () => {
                     Next
                 </button>
                 <button>
-                    <a ref={saveAnchorRef} href={WHITE_PNG} 
+                    <a ref={saveAnchorRef} href={''} 
                         onClick={()=>{
                             const url = myCanvasRef.current.toDataURL("image/png");
                             const link = saveAnchorRef.current;
