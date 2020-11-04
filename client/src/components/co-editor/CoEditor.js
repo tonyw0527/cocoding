@@ -1,17 +1,69 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './CoEditor.css';
-
+import { scrollToBottom } from '../../utils/utils';
 
 const CoEditor = (props) => {
     const {socket} = props;
     const {userName, password} = props;
 
+    const noteRef = useRef();
+    const toolsRef = useRef();
+
     const [Text, setText] = useState('');
     const [IsTutor, setIsTutor] = useState(false);
     const [IsTutorLoggedIn, setIsTutorLoggedIn] = useState(false);
 
+    const handleSendText = (e) => {
+        if(e.type === 'click'){
+            setTimeout(() => {
+                const text = document.getElementById('note').innerHTML;
+                socket.emit('send text', text);    
+            }, 100);
+            return;
+        }
+        const text = document.getElementById('note').innerHTML;
+        socket.emit('send text', text);
+    }
+
+    const handleEdit = (e) => {
+        if(e.code === 'Tab'){
+            e.preventDefault();
+            document.execCommand('insertHTML', false, '<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+        } else if (e.key === '{'){
+            setTimeout(() => {
+                document.execCommand('insertHTML', false, '}');
+            }, 10);
+        } else if (e.key === '('){
+            // setTimeout(() => {
+            //     document.execCommand('insertHTML', false, ')');
+            // }, 10);
+        } else if (e.key === `'`){
+            // setTimeout(() => {
+            //     document.execCommand('insertHTML', false, `'`);
+            // }, 10);
+        } else if (e.key === `"`){
+            // setTimeout(() => {
+            //     document.execCommand('insertHTML', false, `"`);
+            // }, 10);
+        }
+    }
+
     useEffect(() => {
-        console.log('통과')
+        noteRef.current.addEventListener('keydown', handleSendText);
+        noteRef.current.addEventListener('keyup', handleSendText);
+        toolsRef.current.addEventListener('click', handleSendText);
+
+        noteRef.current.addEventListener('keydown', handleEdit);
+        return () => {
+            noteRef.current.removeEventListener('keydown', handleSendText);
+            noteRef.current.removeEventListener('keyup', handleSendText);
+            toolsRef.current.removeEventListener('click', handleSendText);
+
+            noteRef.current.removeEventListener('keydown', handleEdit);    
+        }
+    }, [])
+
+    useEffect(() => {
         socket.emit('login', { userName, password });
 
         socket.on('login', ({isTutor, text_cache}) => {
@@ -36,6 +88,7 @@ const CoEditor = (props) => {
 
     useEffect(() => {
         document.getElementById('note').innerHTML = Text;
+        scrollToBottom(noteRef);
         return () => {
             
         }
@@ -49,18 +102,28 @@ const CoEditor = (props) => {
                 {IsTutorLoggedIn ? <h3>Tutoring <span style={{color: "red"}}>OnAir</span></h3> : <h3>Call your Tutor</h3>}
             </div>
             <div className="CoEditor-main">
-                <div className="CoEditor-tools">
+                <div ref={toolsRef} className="CoEditor-tools">
                     <button onClick={()=>{document.execCommand('bold')}}>
-                        bold
+                        Bold
+                    </button>
+                    <button onClick={()=>{document.execCommand('foreColor', false, '#ffE57C')}}>
+                        yellow
+                    </button>
+                    <button onClick={()=>{document.execCommand('Underline')}}>
+                        Underline
+                    </button>
+                    <button onClick={()=>{
+                        document.execCommand('selectAll');
+                        document.execCommand('copy');
+                        }}>
+                        Copy
                     </button>
                 </div>
-                <div id="note" className="CoEditor-note" contenteditable="true" spellCheck="false" onClick={()=>{
-                        const text = document.getElementById('note').innerHTML;
-                        setText(text);
-                        socket.emit('send text', text);
-                    }}>
-                    hi
+
+                <code>
+                <div ref={noteRef} id="note" className="CoEditor-note" contentEditable="true" spellCheck="false" >   
                 </div>
+                </code>
             </div>
         </div>
     );

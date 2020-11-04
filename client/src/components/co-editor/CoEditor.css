@@ -17,8 +17,15 @@
     margin-bottom: 10px;
 }
 
+.CoEditor-tools button {
+    margin-right: 10px;
+}
+
 .CoEditor-note {
     width: 90vw;
     height: 200px;
+    padding: 10px;
     border: 1px solid black;
+    background-color: gainsboro;
+    overflow-x: hidden;
 }

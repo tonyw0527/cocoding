@@ -53,5 +53,9 @@ class WorkMemory {
     }
 }
 
+const scrollToBottom = (ref) => {
+    ref.current.scrollTop = ref.current.scrollHeight;
+};
 
-export { WorkMemory, canvasImgSetting };
+
+export { WorkMemory, canvasImgSetting, scrollToBottom };
