@@ -103,11 +103,42 @@ const CoEditor = (props) => {
             </div>
             <div className="CoEditor-main">
                 <div ref={toolsRef} className="CoEditor-tools">
+                    <button onClick={()=>{
+                        document.execCommand('selectAll');
+                        document.execCommand('delete');
+                        document.execCommand('foreColor', false, '#ffffff');
+                        }}>
+                        reset
+                    </button>
                     <button onClick={()=>{document.execCommand('bold')}}>
                         Bold
                     </button>
-                    <button onClick={()=>{document.execCommand('foreColor', false, '#ffE57C')}}>
-                        yellow
+                    <button onClick={()=>{
+                        let text = document.getElementById('note').innerHTML;
+                        text = text.replace(/const/g, '<font color="#5ac6f1">const</font>');
+                        text = text.replace(/let/g, '<font color="#5ac6f1">let</font>');
+                        text = text.replace(/log/g, '<font color="#218fff">log</font>');
+
+                        text = text.replace(/=&gt;/g, '<font color="#ffec00"> =&gt; </font>');
+                        text = text.replace(/return;/g, '<font color="#ffec00">return</font><font color="#9fa0a1">;</font>');
+                        text = text.replace(/return/g, '<font color="#ffec00">return</font>');
+                        text = text.replace(/if/g, '<font color="#ffec00">if</font>');
+                        text = text.replace(/for/g, '<font color="#ffec00">for</font>');
+
+                        text = text.replace(/ = /g, '<font color="#e36363">&nbsp;=&nbsp;</font>');
+                        
+                        text = text.replaceAll(');', ')<font color="#9fa0a1">;</font>');
+                        text = text.replaceAll('};', '}<font color="#9fa0a1">;</font>');
+
+                        document.getElementById('note').innerHTML = text;
+                        }}>
+                        highlighting
+                    </button>
+                    <button onClick={()=>{document.execCommand('foreColor', false, '#9fa0a1')}}>
+                        comment color
+                    </button>
+                    <button onClick={()=>{document.execCommand('foreColor', false, '#ffffff')}}>
+                        white
                     </button>
                     <button onClick={()=>{document.execCommand('Underline')}}>
                         Underline
