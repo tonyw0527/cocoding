@@ -28,7 +28,7 @@ const CoEditor = (props) => {
     const handleEdit = (e) => {
         if(e.code === 'Tab'){
             e.preventDefault();
-            document.execCommand('insertHTML', false, '<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+            document.execCommand('insertHTML', false, '&nbsp;&nbsp;&nbsp;&nbsp;');
         } else if (e.key === '{'){
             setTimeout(() => {
                 document.execCommand('insertHTML', false, '}');
@@ -117,6 +117,13 @@ const CoEditor = (props) => {
                         document.execCommand('copy');
                         }}>
                         Copy
+                    </button>
+                    <button onClick={()=>{
+                        const text = document.getElementById('note').innerText;
+                        const result = eval(text);
+                        //console.log('result', result);
+                        }}>
+                        Run
                     </button>
                 </div>
 
