@@ -120,8 +120,13 @@ const CoEditor = (props) => {
                     </button>
                     <button onClick={()=>{
                         const text = document.getElementById('note').innerText;
-                        const result = eval(text);
-                        //console.log('result', result);
+                        try{
+                            const result = eval(text);
+                        } catch (e){
+                            alert(e);
+                            console.log(e);
+                        }
+                        
                         }}>
                         Run
                     </button>
