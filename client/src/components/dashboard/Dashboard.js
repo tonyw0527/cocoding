@@ -6,11 +6,13 @@ import QnaBoard from '../qna-board/QnaBoard';
 import io from 'socket.io-client';
 import dotenv from 'dotenv';
 dotenv.config();
-const socket = io.connect(process.env.REACT_APP_LOCAL_URL);
+//const socket = io.connect(process.env.REACT_APP_LOCAL_URL);
+const socket = io.connect('/');
 
 const Dashboard = (props) => {
     const {userName, password} = props.location.state;
 
+    
     useEffect(() => {
         
         return () => {
