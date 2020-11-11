@@ -4,7 +4,7 @@ const io = require('socket.io')(http);
 const dotenv = require('dotenv');
 
 dotenv.config();
-const PORT = 3001;
+const PORT = process.env.PORT_NUMBER;
 const tutorName = process.env.TUTOR_NAME;
 const invitation_code = process.env.INVITATION_CODE;
 let isTutorLoggedIn = false;
