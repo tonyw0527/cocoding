@@ -19,16 +19,16 @@ const Home = () => {
                     alert(`${UserName}, ${Password}`);
                     history.push('/dashboard', {userName: UserName, password: Password});
                 }}>
-                    <label>UserName
+                    <label>UserName</label>
                         <input type="text" value={UserName} onChange={(e)=>{
                             setUserName(e.target.value);
                         }} />
-                    </label>
-                    <lebel>Password
+                    
+                    <label>Inviation code</label>
                         <input type="text" value={Password} onChange={(e)=>{
                             setPassword(e.target.value);
                         }} />
-                    </lebel>
+                    
                     <button type="submit" >
                         Go
                     </button>

@@ -248,7 +248,7 @@ const Painter = (props) => {
 
     return (
         <>
-        <button style={{marginRight:"5px"}} onClick={() => {
+        <button className="painter-open-btn" style={{marginRight:"5px"}} onClick={() => {
                     if(IsOpen){
                         painterRef.current.style.display = "none";
                         setIsOpen(false);
@@ -261,7 +261,7 @@ const Painter = (props) => {
         </button>
         <div ref={painterRef} className="Painter-wrapper">
             <div className="painter-title-box">
-                <h2>Painter</h2>
+                {/* <h2>Painter</h2> */}
             </div>
             <div className="painter-drawing-box">
                 <canvas ref={myCanvasRef} id="myCanvas" >Error</canvas>

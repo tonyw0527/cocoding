@@ -3,10 +3,16 @@
     flex-flow: column;
     justify-content: center;
     align-items: center;
+    width: 100vw;
+    height: 100vh;
+
+    color: white;
+    background-color: black;
 }
 
 .Home-title {
-
+    margin-bottom: 40px;
+    font-size: 1.8rem;
 }
 
 
@@ -15,4 +21,18 @@
     flex-flow: column;
     /* justify-content: center; */
     align-items: center;
+}
+
+.Home-loginForm form label {
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+}
+
+.Home-loginForm form input {
+    margin-bottom: 20px;
+}
+
+.Home-loginForm form button {
+    width: 100px;
+    height: 30px;
 }

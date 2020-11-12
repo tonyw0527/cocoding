@@ -54,6 +54,7 @@ const CoEditor = (props) => {
         toolsRef.current.addEventListener('click', handleSendText);
 
         noteRef.current.addEventListener('keydown', handleEdit);
+
         return () => {
             noteRef.current.removeEventListener('keydown', handleSendText);
             noteRef.current.removeEventListener('keyup', handleSendText);
@@ -97,11 +98,15 @@ const CoEditor = (props) => {
     return (
         <div className="CoEditor-wrapper">
             <div className="CoEditor-title">
-                <h1>Co-Editor</h1>
                 {IsTutor ? <h3>Tutor Hi!</h3> : <h3>Tutee Hi!</h3>}
                 {IsTutorLoggedIn ? <h3>Tutoring <span style={{color: "red"}}>OnAir</span></h3> : <h3>Call your Tutor</h3>}
             </div>
             <div className="CoEditor-main">
+                <code>
+                <div ref={noteRef} id="note" className="CoEditor-note" contentEditable="true" spellCheck="false" >
+                </div>
+                </code>
+
                 <div ref={toolsRef} className="CoEditor-tools">
                     <button onClick={()=>{
                         document.execCommand('selectAll');
@@ -129,6 +134,10 @@ const CoEditor = (props) => {
                         
                         text = text.replaceAll(');', ')<font color="#9fa0a1">;</font>');
                         text = text.replaceAll('};', '}<font color="#9fa0a1">;</font>');
+                        
+                        var regExp = new RegExp("//.*\n", "gm");
+                        text = text.replace(regExp, "주석 제거").trim()
+                        //text = text.replace(/<div>\/\/(.........)<\/div>/, '<font color="#9fa0a1">$1</font>')
 
                         document.getElementById('note').innerHTML = text;
                         }}>
@@ -162,11 +171,6 @@ const CoEditor = (props) => {
                         Run
                     </button>
                 </div>
-
-                <code>
-                <div ref={noteRef} id="note" className="CoEditor-note" contentEditable="true" spellCheck="false" >   
-                </div>
-                </code>
             </div>
         </div>
     );
